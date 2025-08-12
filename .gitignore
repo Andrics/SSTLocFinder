@@ -1,0 +1,10 @@
+## Ignore Vstudio build files
+bin/
+obj/
+*.user
+*.suo
+*.sln.docstates
+## Ignore Vstudio settings folder
+.vs/
+## Ignore IIS Express
+App_data/

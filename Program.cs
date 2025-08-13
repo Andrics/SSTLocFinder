@@ -1,17 +1,19 @@
 using Microsoft.EntityFrameworkCore;
 using PasswordLookupApp.Data;
+using DotNetEnv; // Add this
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Load environment variables from .env (local only)
+Env.Load();
+
 builder.Services.AddControllersWithViews();
 
-// Add SQLite DB
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite("Data Source=users.db"));
 
 var app = builder.Build();
-// Seed DB
+
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -19,7 +21,6 @@ using (var scope = app.Services.CreateScope())
     SeedData.Initialize(db);
 }
 
-// Configure HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -28,9 +29,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(

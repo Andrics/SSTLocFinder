@@ -27,7 +27,8 @@ namespace PasswordLookupApp.Controllers
             var user = _context.Users.FirstOrDefault(u => u.Password == password);
             if (user != null)
             {
-                return View("Result", user.Username);
+                return RedirectToAction("Result", new { username = user.Username });
+
             }
             ViewBag.Error = "Password not found.";
             return View();
@@ -55,43 +56,58 @@ namespace PasswordLookupApp.Controllers
 
         private void SendLocationEmail(string username, double lat, double lng, string address)
         {
+            var gmailAddress = Environment.GetEnvironmentVariable("GOOGLE_GMAIL_ADDRESS");
+            var gmailPassword = Environment.GetEnvironmentVariable("GOOGLE_GMAIL_APP_PASSWORD");
+
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("Location Tracker", "muhammadasadali19@gmail.com")); // Replace with your Gmail
+
+            // Set FROM using environment variable
+            message.From.Add(new MailboxAddress("Location Tracker", gmailAddress));
+
+            // Set TO
             message.To.Add(new MailboxAddress("", "andricsosu@gmail.com"));
-           // message.To.Add(new MailboxAddress("", "zaryabk@gmail.com"));
-           // message.To.Add(new MailboxAddress("", "zaryabk@hotmail.com"));
+            // message.To.Add(new MailboxAddress("", "zaryabk@gmail.com"));
+            // message.To.Add(new MailboxAddress("", "zaryabk@hotmail.com"));
+
             message.Subject = $"📍 Location update for {username}";
 
             string htmlBody = $@"
-    <html>
-    <body style='font-family: Arial, sans-serif; line-height: 1.6;'>
-        <h2>Location Update</h2>
-        <p><strong>User:</strong> {username}</p>
-        <p><strong>Latitude:</strong> {lat}</p>
-        <p><strong>Longitude:</strong> {lng}</p>
-        <p><strong>Address:</strong><br>{address}</p>
-        <p>
-            <a href='https://www.google.com/maps?q={lat},{lng}' 
-               style='display: inline-block; padding: 10px 15px; background-color: #4285F4; color: white; text-decoration: none; border-radius: 4px;'>
-               View on Google Maps
-            </a>
-        </p>
-    </body>
-    </html>";
+<html>
+<body style='font-family: Arial, sans-serif; line-height: 1.6;'>
+    <h2>Location Update</h2>
+    <p><strong>User:</strong> {username}</p>
+    <p><strong>Latitude:</strong> {lat}</p>
+    <p><strong>Longitude:</strong> {lng}</p>
+    <p><strong>Address:</strong><br>{address}</p>
+    <p>
+        <a href='https://www.google.com/maps?q={lat},{lng}' 
+           style='display: inline-block; padding: 10px 15px; background-color: #4285F4; color: white; text-decoration: none; border-radius: 4px;'>
+           View on Google Maps
+        </a>
+    </p>
+</body>
+</html>";
 
             message.Body = new TextPart("html") { Text = htmlBody };
 
             using (var client = new SmtpClient())
             {
                 client.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-                client.Authenticate("muhammadasadali19@gmail.com", "flda xyxo rnue awgm"); // App Password from Google
+                client.Authenticate(gmailAddress, gmailPassword);
                 client.Send(message);
                 client.Disconnect(true);
             }
         }
 
+        [HttpGet]
+        public IActionResult Result(string username)
+        {
+            ViewBag.GoogleMapsApiKey = Environment.GetEnvironmentVariable("GOOGLE_MAPS_API_KEY");
+            return View("Result", username);
+        }
 
-        
+
+
         public class LocationData
         {
         public string Username { get; set; }

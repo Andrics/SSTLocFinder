@@ -3,8 +3,8 @@ Made with ASP.NET
 
 1) Clone the repo:
 
-        git clone https://github.com/Andrics/SSTLocFinderO.git
-        cd YOUR_REPO
+        git clone https://github.com/Andrics/SSTLocFinder.git
+        cd SSTLocFinder
 
 2) Install dependencies:
 

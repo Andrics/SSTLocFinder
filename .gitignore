@@ -8,4 +8,5 @@ obj/
 .vs/
 ## Ignore IIS Express
 App_data/
+## Ignore Environment Variables
 .env

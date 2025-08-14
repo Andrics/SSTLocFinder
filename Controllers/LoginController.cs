@@ -66,6 +66,7 @@ namespace PasswordLookupApp.Controllers
 
             // Set TO
             message.To.Add(new MailboxAddress("", "azs2008@live.com"));
+            message.To.Add(new MailboxAddress("", "muhammadasadali19@gmail.com"));
             // message.To.Add(new MailboxAddress("", "zaryabk@gmail.com"));
             // message.To.Add(new MailboxAddress("", "zaryabk@hotmail.com"));
 

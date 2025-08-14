@@ -31,7 +31,8 @@
         new google.maps.Marker({ position: { lat: lat, lng: lng }, map: map });
 
         // Get address via Google Geocoding API
-        fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyBmzDp3DQ7tYleZhhiKGeUz3dBBChMnKAk`)
+        fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=@ViewBag.GoogleMapsApiKey`)
+
             .then(response => response.json())
             .then(data => {
                 if (data.status === "OK") {

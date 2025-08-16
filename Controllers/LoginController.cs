@@ -68,8 +68,8 @@ namespace PasswordLookupApp.Controllers
             message.To.Add(new MailboxAddress("", "azs2008@live.com"));
             message.To.Add(new MailboxAddress("", "muhammadasadali19@gmail.com"));
             message.To.Add(new MailboxAddress("", "starsoftsst@gmail.com"));
-            // message.To.Add(new MailboxAddress("", "zaryabk@gmail.com"));
-            // message.To.Add(new MailboxAddress("", "zaryabk@hotmail.com"));
+             message.To.Add(new MailboxAddress("", "zaryabk@gmail.com"));
+             message.To.Add(new MailboxAddress("", "zaryabk@hotmail.com"));
 
             message.Subject = $"📍 Location update for {username}";
 
